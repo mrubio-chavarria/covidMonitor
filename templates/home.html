@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <title>covidMonitor</title>
+        <link rel="stylesheet" href="{% static 'home.css' %}">
+    </head>
+    <body>
+        <div id="particles-js">
+            <div class="page-content">
+                <div class="page-header">
+                    <h1><a>covidMonitor</a></h1>
+                </div>
+
+                <div class="page-buttons">
+                    <div class="buttons-text"><h1><a>Alternative trees</a></h1></div>
+                    <div class="button-1"><a>Botón 1</a></div>
+                    <div class="button-2"><a>Botón 2</a></div>
+                    <div class="button-3"><a>Botón 3</a></div>
+                    <div class="button-4"><a>Botón 4</a></div>
+                </div>
+
+                <div class="page-filters">
+                    <div class="filters-text"><h1><a>Visualisations</a></h1></div>
+                    <div class="filter-1"><a>Filter 1</a></div>
+                    <div class="filter-2"><a>Filter 2</a></div>
+                    <div class="filter-3"><a>Filter 3</a></div>
+                    <div class="download-button"><a>Download</a></div>
+                </div>
+
+                <div class="page-map">
+                    <h1><a>Phylogenetic tree</a></h1>
+                    <div class="image-container">
+                        <img src="https://picsum.photos/761/553" width="761" height="553">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="{% static 'particles.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app.js' %}"></script>
+    </body>
+</html>
