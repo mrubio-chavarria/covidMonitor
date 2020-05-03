@@ -18,84 +18,94 @@ class MapViewSet(viewsets.ModelViewSet):
     serializer_class = TreeSerializer
 
     # Methods
-    @action(detail=False, methods=['GET', 'POST'])
+    @action(detail=False, methods=['GET', ])
     def home_view(self, request):
         """
         DESCRIPTION:
         View to render the home page.
         """
-        return render(request, 'home.html')
+        image = {'image': 'https://picsum.photos/1024/756'}
+        return render(request, 'home.html', image)
 
-    @action(detail=False, methods=['GET', 'POST'])
+    @action(detail=False, methods=['GET', ])
     def button_1(self, request):
         """
         DESCRIPTION:
-        View to render the home page.
+        View to render the button 1 response.
         """
-        return render(request, 'home.html')
+        image = {'image': 'https://picsum.photos/1024/756'}
+        return render(request, 'home.html', image)
 
-    @action(detail=False, methods=['GET', 'POST'])
+    @action(detail=False, methods=['GET', ])
     def button_2(self, request):
         """
         DESCRIPTION:
-        View to render the home page.
+        View to render the button 2 response.
         """
-        return render(request, 'home.html')
+        image = {'image': 'https://picsum.photos/1024/756'}
+        return render(request, 'home.html', image)
 
-    @action(detail=False, methods=['GET', 'POST'])
+    @action(detail=False, methods=['GET', ])
     def button_3(self, request):
         """
         DESCRIPTION:
-        View to render the home page.
+        View to render the button 3 response.
         """
-        return render(request, 'home.html')
+        image = {'image': 'https://picsum.photos/1024/756'}
+        return render(request, 'home.html', image)
 
-    @action(detail=False, methods=['GET', 'POST'])
+    @action(detail=False, methods=['GET', ])
     def button_4(self, request):
         """
         DESCRIPTION:
-        View to render the home page.
+        View to render the button 4 response.
         """
-        return render(request, 'home.html')
+        image = {'image': 'https://picsum.photos/1024/756'}
+        return render(request, 'home.html', image)
 
-    @action(detail=False, methods=['GET', 'POST'])
+    @action(detail=False, methods=['GET', ])
     def filter_1(self, request):
         """
         DESCRIPTION:
-        View to render the home page.
+        View to render the filter 1 response.
         """
-        return render(request, 'home.html')
+        image = {'image': 'https://picsum.photos/1024/756'}
+        return render(request, 'home.html', image)
 
-    @action(detail=False, methods=['GET', 'POST'])
+    @action(detail=False, methods=['GET', ])
     def filter_2(self, request):
         """
         DESCRIPTION:
-        View to render the home page.
+        View to render the filter 2 response.
         """
-        return render(request, 'home.html')
+        image = {'image': 'https://picsum.photos/1024/756'}
+        return render(request, 'home.html', image)
 
-    @action(detail=False, methods=['GET', 'POST'])
+    @action(detail=False, methods=['GET', ])
     def filter_3(self, request):
         """
         DESCRIPTION:
-        View to render the home page.
+        View to render the filter 3 response.
         """
-        return render(request, 'home.html')
+        image = {'image': 'https://picsum.photos/1024/756'}
+        return render(request, 'home.html', image)
 
-    @action(detail=False, methods=['GET', 'POST'])
+    @action(detail=False, methods=['GET', ])
     def download(self, request):
         """
         DESCRIPTION:
-        View to render the home page.
+        View to render the download response.
         """
-        return render(request, 'home.html')
+        image = {'image': 'https://picsum.photos/1024/756'}
+        return render(request, 'home.html', image)
 
 
-@action(detail=False, methods=['GET', 'POST'], permission_classes=(AllowAny,))
+@action(detail=False, methods=['GET', ], permission_classes=(AllowAny, ))
 def home_view(request):
     """
     DESCRIPTION:
     The only FBV to redirect to the original home_view
     """
-    return redirect('/maps/home_view')
+    image = {'image': 'https://picsum.photos/1024/756'}
+    return render(request, 'home.html', image)
 

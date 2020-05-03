@@ -16,19 +16,19 @@
             <div class="page-buttons">
                 <div class="buttons-text"><h1><a>Alternative trees</a></h1></div>
                 <div class="buttons-container">
-                    <form id="button-1" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                    <form id="button-1" action='/maps/button_1/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
                         <button class="button" type="submit" style="margin: 1%;">Button 1</button>
                     </form>
-                    <form id="button-2" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                    <form id="button-2" action='/maps/button_2/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
                         <button class="button" type="submit" style="margin: 1%;">Button 2</button>
                     </form>
-                    <form id="button-3" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                    <form id="button-3" action='/maps/button_3/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
                         <button class="button" type="submit" style="margin: 1%;">Button 3</button>
                     </form>
-                    <form id="button-4" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                    <form id="button-4" action='/maps/button_4/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
                         <button class="button" type="submit" style="margin: 1%;">Button 4</button>
                     </form>
@@ -38,19 +38,19 @@
             <div class="page-filters">
                 <div class="filters-text"><h1><a>Visualisations</a></h1></div>
                 <div class="filters-container">
-                    <form id="filter-1" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                    <form id="filter-1" action='/maps/filter_1/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
                         <button class="filter" type="submit" style="margin: 1%;">Filter 1</button>
                     </form>
-                    <form id="filter-2" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                    <form id="filter-2" action='/maps/filter_2/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
                         <button class="filter" type="submit" style="margin: 1%;">Filter 2</button>
                     </form>
-                    <form id="filter-3" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                    <form id="filter-3" action='/maps/filter_3/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
                         <button class="filter" type="submit" style="margin: 1%;">Filter 3</button>
                     </form>
-                    <form id="filter-4" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                    <form id="filter-4" action='/maps/download/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
                         <button class="filter" type="submit" style="margin: 1%;">Download</button>
                     </form>
@@ -60,7 +60,7 @@
             <div class="page-map">
                 <div class="image-header"><h1><a>Phylogenetic tree</a></h1></div>
                 <div class="image-container">
-                    <img src="https://picsum.photos/1024/756"  width=100%>
+                    <img src="{{ image }}"  width="100%">
                 </div>
             </div>
         </div>
