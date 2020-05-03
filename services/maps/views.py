@@ -26,6 +26,70 @@ class MapViewSet(viewsets.ModelViewSet):
         """
         return render(request, 'home.html')
 
+    @action(detail=False, methods=['GET', 'POST'])
+    def button_1(self, request):
+        """
+        DESCRIPTION:
+        View to render the home page.
+        """
+        return render(request, 'home.html')
+
+    @action(detail=False, methods=['GET', 'POST'])
+    def button_2(self, request):
+        """
+        DESCRIPTION:
+        View to render the home page.
+        """
+        return render(request, 'home.html')
+
+    @action(detail=False, methods=['GET', 'POST'])
+    def button_3(self, request):
+        """
+        DESCRIPTION:
+        View to render the home page.
+        """
+        return render(request, 'home.html')
+
+    @action(detail=False, methods=['GET', 'POST'])
+    def button_4(self, request):
+        """
+        DESCRIPTION:
+        View to render the home page.
+        """
+        return render(request, 'home.html')
+
+    @action(detail=False, methods=['GET', 'POST'])
+    def filter_1(self, request):
+        """
+        DESCRIPTION:
+        View to render the home page.
+        """
+        return render(request, 'home.html')
+
+    @action(detail=False, methods=['GET', 'POST'])
+    def filter_2(self, request):
+        """
+        DESCRIPTION:
+        View to render the home page.
+        """
+        return render(request, 'home.html')
+
+    @action(detail=False, methods=['GET', 'POST'])
+    def filter_3(self, request):
+        """
+        DESCRIPTION:
+        View to render the home page.
+        """
+        return render(request, 'home.html')
+
+    @action(detail=False, methods=['GET', 'POST'])
+    def download(self, request):
+        """
+        DESCRIPTION:
+        View to render the home page.
+        """
+        return render(request, 'home.html')
+
 
 @action(detail=False, methods=['GET', 'POST'], permission_classes=(AllowAny,))
 def home_view(request):

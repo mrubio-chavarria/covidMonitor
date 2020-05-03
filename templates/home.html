@@ -4,34 +4,63 @@
     <head>
         <title>covidMonitor</title>
         <link rel="stylesheet" href="{% static 'home.css' %}">
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&family=Major+Mono+Display&display=swap" rel="stylesheet">
     </head>
     <body>
-        <!--  Deleted class="page-content" in id="particles-js" -->
         <div class="page-content">
             <div class="overlay"><div id="particles-js"></div></div>
             <div class="page-header">
                 <h1><a>covidMonitor</a></h1>
             </div>
+
             <div class="page-buttons">
                 <div class="buttons-text"><h1><a>Alternative trees</a></h1></div>
-                <div class="button-1"><a>Botón 1</a></div>
-                <div class="button-2"><a>Botón 2</a></div>
-                <div class="button-3"><a>Botón 3</a></div>
-                <div class="button-4"><a>Botón 4</a></div>
+                <div class="buttons-container">
+                    <form id="button-1" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                        {% csrf_token %}
+                        <button class="button" type="submit" style="margin: 1%;">Button 1</button>
+                    </form>
+                    <form id="button-2" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                        {% csrf_token %}
+                        <button class="button" type="submit" style="margin: 1%;">Button 2</button>
+                    </form>
+                    <form id="button-3" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                        {% csrf_token %}
+                        <button class="button" type="submit" style="margin: 1%;">Button 3</button>
+                    </form>
+                    <form id="button-4" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                        {% csrf_token %}
+                        <button class="button" type="submit" style="margin: 1%;">Button 4</button>
+                    </form>
+                </div>
             </div>
 
             <div class="page-filters">
                 <div class="filters-text"><h1><a>Visualisations</a></h1></div>
-                <div class="filter-1"><a>Filter 1</a></div>
-                <div class="filter-2"><a>Filter 2</a></div>
-                <div class="filter-3"><a>Filter 3</a></div>
-                <div class="download-button"><a>Download</a></div>
+                <div class="filters-container">
+                    <form id="filter-1" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                        {% csrf_token %}
+                        <button class="filter" type="submit" style="margin: 1%;">Filter 1</button>
+                    </form>
+                    <form id="filter-2" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                        {% csrf_token %}
+                        <button class="filter" type="submit" style="margin: 1%;">Filter 2</button>
+                    </form>
+                    <form id="filter-3" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                        {% csrf_token %}
+                        <button class="filter" type="submit" style="margin: 1%;">Filter 3</button>
+                    </form>
+                    <form id="filter-4" action='/maps/home_view/' enctype='multipart/form-data' method='POST'>
+                        {% csrf_token %}
+                        <button class="filter" type="submit" style="margin: 1%;">Download</button>
+                    </form>
+                </div>
             </div>
 
             <div class="page-map">
-                <h1><a>Phylogenetic tree</a></h1>
+                <div class="image-header"><h1><a>Phylogenetic tree</a></h1></div>
                 <div class="image-container">
-                    <img src="https://picsum.photos/761/553" width="761" height="553">
+                    <img src="https://picsum.photos/1024/756"  width=100%>
                 </div>
             </div>
         </div>
