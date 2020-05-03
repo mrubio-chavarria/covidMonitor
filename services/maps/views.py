@@ -1,3 +1,6 @@
+import zipfile
+
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -94,10 +97,20 @@ class MapViewSet(viewsets.ModelViewSet):
     def download(self, request):
         """
         DESCRIPTION:
-        View to render the download response.
+        View to download all the files of a tree within an already created
         """
-        image = {'image': 'https://picsum.photos/1024/756'}
-        return render(request, 'home.html', image)
+        response = HttpResponse(content_type='application/zip')
+        zf = zipfile.ZipFile(response, 'w')
+
+        # Create the zipfile in memory using writestr
+        zf.write('styles/sample.txt', arcname='sample.txt')
+
+        # Set the name of the file
+        filename = 'test_file' + '.zip'
+
+        # Return as zipfile
+        response['Content-Disposition'] = f'attachment; filename={filename}'
+        return response
 
 
 @action(detail=False, methods=['GET', ], permission_classes=(AllowAny, ))
