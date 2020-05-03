@@ -5,9 +5,19 @@ body {
     height: 100%;
 }
 
-#particles-js {
-    height: 100%;
-    background: #262626;
+div {
+    background: rgba(0, 0, 0, 0);
+}
+
+.overlay {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 3;
+}
+
+canvas {
+    display: block;
 }
 
 .page-content {
@@ -16,11 +26,11 @@ body {
     grid-template-columns: 20% 79%;
     grid-row-gap: 2.5%;
     grid-column-gap: 1%;
+    height: 100%;
     width: 100%;
 }
 
 .page-header {
-    background-color: red;
     text-align: center;
     grid-row-start: 1;
     grid-row-end: 1;
@@ -30,7 +40,6 @@ body {
 }
 
 .page-buttons {
-    background-color: blue;
     text-align: center;
     display: grid;
     grid-template-rows:  50% 50%;
@@ -81,7 +90,6 @@ body {
 }
 
 .page-filters {
-    background-color: purple;
     text-align: center;
     display: grid;
     grid-template-rows: 15% 15% 15% 15% 15%;
@@ -135,7 +143,6 @@ body {
 }
 
 .page-map {
-    background-color: yellow;
     text-align: center;
     grid-row-start: 2;
     grid-row-end: 2;
