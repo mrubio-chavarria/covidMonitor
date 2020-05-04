@@ -12,9 +12,6 @@ CACHE_DIR.mkdir(exist_ok=True)
 FASTA_DIR = BASE_DIR / 'fasta'
 FASTA_DIR.mkdir(exist_ok=True)
 
-MEDIA_DIR = BASE_DIR / 'media'
-MEDIA_DIR.mkdir(exist_ok=True)
-
 TREE_DIR = BASE_DIR / 'tree'
 TREE_DIR.mkdir(exist_ok=True)
 

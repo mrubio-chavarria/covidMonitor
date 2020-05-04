@@ -4,12 +4,13 @@ from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
-from .models import Tree, Representation
+from .models import Tree, Alignment, Representation
 from .serializers import TreeSerializer
 from django.core.files import File
-from covidMonitor.settings import MEDIA_URL, BASE_DIR
+from covidMonitor.settings import MEDIA_URL, BASE_DIR, COVID_PHYLO_ROOT
 from .utils import preprocess
-
+from .serializers import RepresentationSerializer
+from covid_phylo.src.config import FASTA_DIR
 
 
 class MapViewSet(viewsets.ModelViewSet):
@@ -37,9 +38,27 @@ class MapViewSet(viewsets.ModelViewSet):
     def button_complete(self, request):
         """
         DESCRIPTION:
-        View to render the button 1 response.
+        View to render the map of the complete genome.
         """
-        image = {'image': 'https://picsum.photos/1024/756'}
+        # Default image
+        tag = 'complete_genome'
+        aligned_file = COVID_PHYLO_ROOT + '/' + 'fasta' + '/' + 'complete_20200502024515_aligned'
+        # Obtain the processed alignment
+        processed_file = preprocess(aligned_file, True)
+        align, flag = Alignment.objects.get_or_create(tag=tag)
+        align.genomes_file = aligned_file
+        align.processed_file = processed_file
+        align.save()
+        # Obtain the tree
+        tree, flag = Tree.objects.get_or_create(tag=tag)
+        tree.alignment = align
+        tree.newick_method(processed_file)
+        # Obtain the map
+        map, flag = Representation.objects.get_or_create(tag=tag)
+        map.tree = tree
+        map.render_map()
+        image = '/static/' + map.image_url.split('/')[-1]
+        image = {'image': image}
         return render(request, 'home.html', image)
 
     @action(detail=False, methods=['GET', ])

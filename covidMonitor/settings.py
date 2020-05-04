@@ -128,11 +128,18 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'styles'),
+    os.path.join(BASE_DIR, 'images'),
 )
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-STRUCTURES_ROOT = os.path.join(BASE_DIR, 'structures')
-STRUCTURES_URL = '/structures/'
+IMAGES_DIR = BASE_DIR + '/' + 'images'
+Path(IMAGES_DIR).mkdir(exist_ok=True)
+
+STRUCTURES_DIR = BASE_DIR + '/' + 'structures'
+Path(STRUCTURES_DIR).mkdir(exist_ok=True)
+
+COVID_PHYLO_ROOT = os.path.join(BASE_DIR, 'covid_phylo/covid_phylo_data')
+
 

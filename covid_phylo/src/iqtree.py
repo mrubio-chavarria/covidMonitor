@@ -2,7 +2,7 @@
 import os
 import subprocess
 
-from config import MEDIA_DIR, TREE_DIR, FASTA_DIR
+from covid_phylo.src.config import TREE_DIR
 
 
 def tree_creator(selectname):
@@ -15,35 +15,30 @@ def tree_creator(selectname):
     print('Executing tree inference')
     filename = selectname
     subfolder = selectname.split('.')[0]
-    process = subprocess.run(['iqtree', '-s', f'{TREE_DIR / subfolder / filename}', '-bnni', '-nt', 'AUTO'])
-    print('Tree inference completed with exit code %d' % process.returncode)
+    route = TREE_DIR / subfolder / filename
+    # process = subprocess.run(['cd', 'covid_phylo/covid_phylo_data;', 'iqtree', '-s', f'{route}', '-bnni', '-nt', 'AUTO'])
+    command = f'cd covid_phylo/covid_phylo_data; iqtree -s {route} -bnni -nt AUTO'
+    returncode = subprocess.call(command, shell=True)
+    file = open(selectname + '.treefile', 'r')
+    newick_tree = file.read()
+    file.close()
+    print('Tree inference completed with exit code %d' % returncode)
+    return newick_tree
 
-
-def align_selector(origname, destname, n_genomes):
+def align_selector(aligns, n_genomes):
     """
     DESCRIPTION:
     Function to select the n alignments with the lowest number of gaps.
-    :param origname: [string] name of the file with the complete list of alignments in the fasta folder.
-    :param destname: [string] name of the file to be put in the tree folder. The same as the name of the subfolder.
+    :param aligns: [string] string with the content of the whole file.
     :param n_genomes: [integer] number of alignments to be taken.
-    :return: None. It writes the selected aignments in the destname folder.
+    :return: the data of the file the selected number of instances.
     """
-    # Part to take the alignments with lowest number of gaps
-    file = open(FASTA_DIR / origname, 'r')
 
-    # Read the information
-    data = file.read()
-    file.close()
-    data = data.split('>')[1::]  # The first element is an empty string
+    data = aligns.split('>')[1::]  # The first element is an empty string
 
     # Take the best n models
     gaps = list(enumerate([model.count('-') for model in data]))
     data = '\n'.join(['>' + data[element[0]] for element in sorted(gaps, key=lambda x: x[1])[0:n_genomes]])
 
-    # Write the selected data into another file
-    sel_dir = TREE_DIR / destname.split('.')[0]
-    sel_dir.mkdir(exist_ok=True)
-    file = open(sel_dir / destname, 'w')
-    file.write(data)
-    file.close()
+    return data
 

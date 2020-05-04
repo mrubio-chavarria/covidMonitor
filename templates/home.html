@@ -16,7 +16,7 @@
             <div class="page-buttons">
                 <div class="buttons-text"><h1><a>Alternative trees</a></h1></div>
                 <div class="buttons-container">
-                    <form id="button-1" action='/maps/button_1/' enctype='multipart/form-data' method='GET'>
+                    <form id="button-1" action='/maps/button_complete/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
                         <button class="button" type="submit" style="margin: 1%;">Button 1</button>
                     </form>
@@ -60,7 +60,7 @@
             <div class="page-map">
                 <div class="image-header"><h1><a>Phylogenetic tree</a></h1></div>
                 <div class="image-container">
-                    <img src="{{ rep.image_url }}"  width="100%">
+                    <img src="{{ image }}"  width="100%">
                 </div>
             </div>
         </div>
