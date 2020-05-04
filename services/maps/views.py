@@ -7,7 +7,8 @@ from rest_framework.permissions import AllowAny
 from .models import Tree, Representation
 from .serializers import TreeSerializer
 from django.core.files import File
-from covidMonitor.settings import MEDIA_URL
+from covidMonitor.settings import MEDIA_URL, BASE_DIR
+from .utils import preprocess
 
 
 
@@ -29,16 +30,11 @@ class MapViewSet(viewsets.ModelViewSet):
         DESCRIPTION:
         View to render the home page.
         """
-
-        tree, flag = Tree.objects.get_or_create(newick_structure=File(open('/structures/newick.txt', 'r')))
-        rep, flag = Representation.objects.get_or_create(tree=tree)
-        # image_url = BASE_DIR + rep.image_url
-        image_url = "/media/mytree.png"
-        obj = {'rep': rep}
-        return render(request, 'home.html', obj)
+        image = {'image': 'https://picsum.photos/1024/756'}
+        return render(request, 'home.html', image)
 
     @action(detail=False, methods=['GET', ])
-    def button_1(self, request):
+    def button_complete(self, request):
         """
         DESCRIPTION:
         View to render the button 1 response.
