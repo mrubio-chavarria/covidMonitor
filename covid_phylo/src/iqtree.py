@@ -5,7 +5,7 @@ import subprocess
 from covid_phylo.src.config import TREE_DIR
 
 
-def tree_creator(selectname):
+def tree_creator(selectname, tag):
     """
     DESCRIPTION:
     A function create the tree inference and store the results in a subfolder within covid_phylo/tree/
@@ -16,8 +16,7 @@ def tree_creator(selectname):
     filename = selectname
     subfolder = selectname.split('.')[0]
     route = TREE_DIR / subfolder / filename
-    # process = subprocess.run(['cd', 'covid_phylo/covid_phylo_data;', 'iqtree', '-s', f'{route}', '-bnni', '-nt', 'AUTO'])
-    command = f'cd covid_phylo/covid_phylo_data; iqtree -s {route} -bnni -nt AUTO'
+    command = f'cd covid_phylo/covid_phylo_data; iqtree -s {route} -bnni -nt AUTO -redo'
     returncode = subprocess.call(command, shell=True)
     file = open(selectname + '.treefile', 'r')
     newick_tree = file.read()

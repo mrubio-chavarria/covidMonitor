@@ -30,3 +30,4 @@ toml==0.10.0
 urllib3==1.25.8
 wget==3.2
 xlrd==1.2.0
+pyqtgraph==0.10.0

@@ -9,8 +9,7 @@ from .serializers import TreeSerializer
 from django.core.files import File
 from covidMonitor.settings import MEDIA_URL, BASE_DIR, COVID_PHYLO_ROOT
 from .utils import preprocess
-from .serializers import RepresentationSerializer
-from covid_phylo.src.config import FASTA_DIR
+import pyqtgraph as pg
 
 
 class MapViewSet(viewsets.ModelViewSet):
@@ -25,14 +24,33 @@ class MapViewSet(viewsets.ModelViewSet):
     serializer_class = TreeSerializer
 
     # Methods
-    @action(detail=False, methods=['GET', ])
-    def home_view(self, request):
+    def base_view(self, tag, alignment):
         """
         DESCRIPTION:
-        View to render the home page.
+        The basic scheme of every view.
         """
-        image = {'image': 'https://picsum.photos/1024/756'}
-        return render(request, 'home.html', image)
+        aligned_file = COVID_PHYLO_ROOT + '/' + 'fasta' + '/' + alignment
+        # Obtain the processed alignment
+        processed_file = preprocess(aligned_file, True, tag)
+        align, flag = Alignment.objects.get_or_create(tag=tag)
+        print(flag)
+        align.genomes_file = aligned_file
+        align.processed_file = processed_file
+        align.save()
+        # Obtain the tree
+        tree, flag = Tree.objects.get_or_create(tag=tag)
+        print(flag)
+        print(tree.layout)
+        tree.alignment = align
+        tree.newick_method(processed_file, tag)
+        # Obtain the map
+        map, flag = Representation.objects.get_or_create(tag=tag)
+        print(flag)
+        map.tree = tree
+        map.render_map(tag)
+        image = '/static/' + map.image_url.split('/')[-1]
+        image = {'image': image}
+        return image
 
     @action(detail=False, methods=['GET', ])
     def button_complete(self, request):
@@ -40,80 +58,80 @@ class MapViewSet(viewsets.ModelViewSet):
         DESCRIPTION:
         View to render the map of the complete genome.
         """
-        # Default image
+        # Initial data
         tag = 'complete_genome'
-        aligned_file = COVID_PHYLO_ROOT + '/' + 'fasta' + '/' + 'complete_20200502024515_aligned'
-        # Obtain the processed alignment
-        processed_file = preprocess(aligned_file, True)
-        align, flag = Alignment.objects.get_or_create(tag=tag)
-        align.genomes_file = aligned_file
-        align.processed_file = processed_file
-        align.save()
-        # Obtain the tree
-        tree, flag = Tree.objects.get_or_create(tag=tag)
-        tree.alignment = align
-        tree.newick_method(processed_file)
-        # Obtain the map
-        map, flag = Representation.objects.get_or_create(tag=tag)
-        map.tree = tree
-        map.render_map()
-        image = '/static/' + map.image_url.split('/')[-1]
-        image = {'image': image}
+        alignment = 'complete_20200502024515_aligned'
+        image = self.base_view(tag, alignment)
         return render(request, 'home.html', image)
 
     @action(detail=False, methods=['GET', ])
-    def button_2(self, request):
+    def button_S(self, request):
         """
         DESCRIPTION:
-        View to render the button 2 response.
+        View to render the button S response.
         """
-        image = {'image': 'https://picsum.photos/1024/756'}
+        # Initial data
+        tag = 'geneS_genome'
+        alignment = 'china_20200504041407_aligned'
+        image = self.base_view(tag, alignment)
         return render(request, 'home.html', image)
 
     @action(detail=False, methods=['GET', ])
-    def button_3(self, request):
+    def button_N(self, request):
         """
         DESCRIPTION:
-        View to render the button 3 response.
+        View to render the button N response.
         """
-        image = {'image': 'https://picsum.photos/1024/756'}
+        # Initial data
+        tag = 'geneN_genome'
+        alignment = 'spain_20200504021458_aligned'
+        image = self.base_view(tag, alignment)
         return render(request, 'home.html', image)
 
     @action(detail=False, methods=['GET', ])
-    def button_4(self, request):
+    def button_M(self, request):
         """
         DESCRIPTION:
-        View to render the button 4 response.
+        View to render the button M response.
         """
-        image = {'image': 'https://picsum.photos/1024/756'}
+        # Initial data
+        tag = 'geneM_genome'
+        alignment = 'china_20200504041407_aligned'
+        image = self.base_view(tag, alignment)
         return render(request, 'home.html', image)
 
     @action(detail=False, methods=['GET', ])
-    def filter_1(self, request):
+    def filter_pi(self, request):
         """
         DESCRIPTION:
-        View to render the filter 1 response.
+        View to render the filter pi response.
         """
-        image = {'image': 'https://picsum.photos/1024/756'}
-        return render(request, 'home.html', image)
+        print(Tree.objects.values_list('layout', flat=True))
+        Tree.objects.update(layout='pi')
+        print(Tree.objects.values_list('layout', flat=True))
+        return redirect('/', request)
 
     @action(detail=False, methods=['GET', ])
-    def filter_2(self, request):
+    def filter_mu(self, request):
         """
         DESCRIPTION:
-        View to render the filter 2 response.
+        View to render the filter mu response.
         """
-        image = {'image': 'https://picsum.photos/1024/756'}
-        return render(request, 'home.html', image)
+        print(Tree.objects.values_list('layout', flat=True))
+        Tree.objects.update(layout='mu')
+        print(Tree.objects.values_list('layout', flat=True))
+        return redirect('/', request)
 
     @action(detail=False, methods=['GET', ])
-    def filter_3(self, request):
+    def filter_ro(self, request):
         """
         DESCRIPTION:
-        View to render the filter 3 response.
+        View to render the filter ro response.
         """
-        image = {'image': 'https://picsum.photos/1024/756'}
-        return render(request, 'home.html', image)
+        print(Tree.objects.values_list('layout', flat=True))
+        Tree.objects.update(layout='ro')
+        print(Tree.objects.values_list('layout', flat=True))
+        return redirect('/', request)
 
     @action(detail=False, methods=['GET', ])
     def download(self, request):
@@ -141,6 +159,7 @@ def home_view(request):
     DESCRIPTION:
     The only FBV to redirect to the original home_view
     """
-    image = {'image': 'https://picsum.photos/1024/756'}
+    # image = {'image': 'https://picsum.photos/1024/756'}
+    image = {}
     return render(request, 'home.html', image)
 

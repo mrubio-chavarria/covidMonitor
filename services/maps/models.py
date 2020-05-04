@@ -33,15 +33,16 @@ class Tree(models.Model):
     newick_structure = models.CharField(null=True, blank=True, max_length=2000000)
     # It is not implemented any unique constraint but it is supposed that the following attribute could be PK
     tag = models.CharField(max_length=20, default='default_tag')
+    layout = models.CharField(max_length=2, default='pi')
     objects = models.Manager()
 
     # Methods
-    def newick_method(self, url):
+    def newick_method(self, url, tag):
         """
         DESCRIPTION:
         A method that, provided the url of an alignment file, creates the newick tree.
         """
-        self.newick_structure = tree_creator(url)
+        self.newick_structure = tree_creator(url, tag)
         self.save()
 
 
@@ -57,22 +58,35 @@ class Representation(models.Model):
     tree = models.ForeignKey(Tree, null=True, blank=True, on_delete=models.SET_NULL, related_name='representations')
     image_url = models.URLField(max_length=2000, null=True, blank=True)
     tag = models.CharField(max_length=20, default='default_tag')
+    layout = models.CharField(max_length=2, default='pi')
     objects = models.Manager()
 
     # Methods
-    def render_map(self):
+    def render_map(self, name_image):
         """
         DESCRIPTION:
         A method to, given the newick structure, render the whole map.
         :return: None.
         """
+        # Obtain the tree
         newick = self.tree.newick_structure
         tree = ete3.Tree(newick)
-        circular_style = ete3.TreeStyle()
-        circular_style.mode = "c"
-        circular_style.scale = 20
-
-        image_url = IMAGES_DIR + '/' + 'nuevotree.png'
+        print(self.layout)
+        # Set the layout
+        if self.tree.layout == 'pi':
+            circular_style = ete3.TreeStyle()
+            circular_style.mode = 'c'
+            circular_style.scale = 20
+        elif self.tree.layout == 'mu':
+            circular_style = ete3.TreeStyle()
+            circular_style.mode = 'r'
+            circular_style.scale = 0.2
+        else:
+            circular_style = ete3.TreeStyle()
+            circular_style.mode = 'c'
+            circular_style.scale = 40
+        # Store images
+        image_url = IMAGES_DIR + '/' + f'{name_image}.png'
         tree.render(image_url, w=2048, units='mm', tree_style=circular_style)
         self.image_url = image_url
         self.save()

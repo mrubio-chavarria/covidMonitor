@@ -18,19 +18,19 @@
                 <div class="buttons-container">
                     <form id="button-1" action='/maps/button_complete/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
-                        <button class="button" type="submit" style="margin: 1%;">Button 1</button>
+                        <button class="button" type="submit" style="margin: 1%;">Complete genome</button>
                     </form>
-                    <form id="button-2" action='/maps/button_2/' enctype='multipart/form-data' method='GET'>
+                    <form id="button-2" action='/maps/button_S/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
-                        <button class="button" type="submit" style="margin: 1%;">Button 2</button>
+                        <button class="button" type="submit" style="margin: 1%;">Gene S</button>
                     </form>
-                    <form id="button-3" action='/maps/button_3/' enctype='multipart/form-data' method='GET'>
+                    <form id="button-3" action='/maps/button_N/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
-                        <button class="button" type="submit" style="margin: 1%;">Button 3</button>
+                        <button class="button" type="submit" style="margin: 1%;">Gene N</button>
                     </form>
-                    <form id="button-4" action='/maps/button_4/' enctype='multipart/form-data' method='GET'>
+                    <form id="button-4" action='/maps/button_M/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
-                        <button class="button" type="submit" style="margin: 1%;">Button 4</button>
+                        <button class="button" type="submit" style="margin: 1%;">Gene M</button>
                     </form>
                 </div>
             </div>
@@ -38,17 +38,17 @@
             <div class="page-filters">
                 <div class="filters-text"><h1><a>Visualisations</a></h1></div>
                 <div class="filters-container">
-                    <form id="filter-1" action='/maps/filter_1/' enctype='multipart/form-data' method='GET'>
+                    <form id="filter-1" action='/maps/filter_pi/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
-                        <button class="filter" type="submit" style="margin: 1%;">Filter 1</button>
+                        <button class="filter" type="submit" style="margin: 1%;">Filter Pi</button>
                     </form>
-                    <form id="filter-2" action='/maps/filter_2/' enctype='multipart/form-data' method='GET'>
+                    <form id="filter-2" action='/maps/filter_mu/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
-                        <button class="filter" type="submit" style="margin: 1%;">Filter 2</button>
+                        <button class="filter" type="submit" style="margin: 1%;">Filter Mu</button>
                     </form>
-                    <form id="filter-3" action='/maps/filter_3/' enctype='multipart/form-data' method='GET'>
+                    <form id="filter-3" action='/maps/filter_ro/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}
-                        <button class="filter" type="submit" style="margin: 1%;">Filter 3</button>
+                        <button class="filter" type="submit" style="margin: 1%;">Filter Ro</button>
                     </form>
                     <form id="filter-4" action='/maps/download/' enctype='multipart/form-data' method='GET'>
                         {% csrf_token %}

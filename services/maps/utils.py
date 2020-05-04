@@ -1,4 +1,5 @@
 
+from pathlib import Path
 from covid_phylo.src.iqtree import align_selector
 from covidMonitor.settings import STRUCTURES_DIR
 
@@ -48,13 +49,14 @@ def aligns_filter(aligns, positions, tags):
         yield f'>{tags[i]}\n' + ''.join(chunk)
 
 
-def preprocess(url_file, reduction):
+def preprocess(url_file, reduction, tag):
 
     file = open(url_file, 'r')
     text = file.read()
     file.close()
 
-    text = align_selector(text, 100)
+    if reduction:
+        text = align_selector(text, 100)
 
     row_aligns = list(aux_counter(text))
     aligns = list(tags_divider(row_aligns))
@@ -64,10 +66,11 @@ def preprocess(url_file, reduction):
 
     align_buffer = list(aligns_filter(aligns, positions, tags))
     align_buffer = '\n'.join(align_buffer)
-    file = open(STRUCTURES_DIR + '/temporary_alignment.txt', 'w')
+    route = STRUCTURES_DIR + f'/{tag}'
+    Path(route).mkdir(exist_ok=True)
+    fileroute = route + f'/{tag}.txt'
+    file = open(fileroute, 'w')
     file.write(align_buffer)
     file.close()
 
-    return STRUCTURES_DIR + '/temporary_alignment.txt'
-
-
+    return fileroute
