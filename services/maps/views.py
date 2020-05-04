@@ -1,12 +1,14 @@
 import zipfile
-
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
-from .models import Tree
+from .models import Tree, Representation
 from .serializers import TreeSerializer
+from django.core.files import File
+from covidMonitor.settings import MEDIA_URL
+
 
 
 class MapViewSet(viewsets.ModelViewSet):
@@ -27,8 +29,13 @@ class MapViewSet(viewsets.ModelViewSet):
         DESCRIPTION:
         View to render the home page.
         """
-        image = {'image': 'https://picsum.photos/1024/756'}
-        return render(request, 'home.html', image)
+
+        tree, flag = Tree.objects.get_or_create(newick_structure=File(open('/structures/newick.txt', 'r')))
+        rep, flag = Representation.objects.get_or_create(tree=tree)
+        # image_url = BASE_DIR + rep.image_url
+        image_url = "/media/mytree.png"
+        obj = {'rep': rep}
+        return render(request, 'home.html', obj)
 
     @action(detail=False, methods=['GET', ])
     def button_1(self, request):

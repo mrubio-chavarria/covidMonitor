@@ -22,4 +22,5 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     url(r'^', include('services.maps.urls')),
-]
+] + staticfiles_urlpatterns() + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)\
+              + static(settings.STRUCTURES_URL, document_root=settings.STRUCTURES_ROOT)
