@@ -56,7 +56,7 @@ def preprocess(url_file, reduction, tag):
     file.close()
 
     if reduction:
-        text = align_selector(text, 100)
+        text = align_selector(text, 600)
 
     row_aligns = list(aux_counter(text))
     aligns = list(tags_divider(row_aligns))
