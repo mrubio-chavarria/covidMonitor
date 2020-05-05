@@ -89,7 +89,7 @@ class MapViewSet(viewsets.ModelViewSet):
         View to render the button S response.
         """
         # Initial data
-        tag = 'geneS_genome'
+        tag = 'china_genome'
         alignment = 'china_20200504041407_aligned'
         image = self.base_view(tag, alignment)
         return render(request, 'home.html', image)
@@ -116,16 +116,26 @@ class MapViewSet(viewsets.ModelViewSet):
     def download(self, request):
         """
         DESCRIPTION:
-        View to download all the files of a tree within an already created
+        View to download all the files of a tree with all its data.
         """
+        # Create our container
         response = HttpResponse(content_type='application/zip')
         zf = zipfile.ZipFile(response, 'w')
 
-        # Create the zipfile in memory using writestr
-        zf.write('styles/sample.txt', arcname='sample.txt')
+        # Read files
+        tags = ['complete_genome', 'china_genome']
+        filters = ['pi', 'mu']
+
+        # Load the files
+        for tag in tags:
+            route_iqtree = f'structures/{tag}/{tag}.txt.iqtree'
+            zf.write(route_iqtree, arcname=f'{tag}.txt.iqtree')
+            for filter in filters:
+                route_image = f'images/{tag}{filter}.png'
+                zf.write(route_image, arcname=f'{tag}{filter}.png')
 
         # Set the name of the file
-        filename = 'test_file' + '.zip'
+        filename = 'covidMonitor' + '.zip'
 
         # Return as zipfile
         response['Content-Disposition'] = f'attachment; filename={filename}'
