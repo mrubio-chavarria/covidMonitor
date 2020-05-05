@@ -2,6 +2,7 @@ from django.db import models
 import ete3
 from covid_phylo.src.iqtree import tree_creator
 from covidMonitor.settings import IMAGES_DIR
+from ete3 import NodeStyle
 
 
 class Alignment(models.Model):
@@ -62,7 +63,7 @@ class Representation(models.Model):
     objects = models.Manager()
 
     # Methods
-    def render_map(self, name_image):
+    def render_map(self):
         """
         DESCRIPTION:
         A method to, given the newick structure, render the whole map.
@@ -71,23 +72,40 @@ class Representation(models.Model):
         # Obtain the tree
         newick = self.tree.newick_structure
         tree = ete3.Tree(newick)
-        print(self.layout)
         # Set the layout
         if self.tree.layout == 'pi':
-            circular_style = ete3.TreeStyle()
-            circular_style.mode = 'c'
-            circular_style.scale = 20
+            style = ete3.TreeStyle()
+            style.mode = 'c'
+            style.scale = 2
         elif self.tree.layout == 'mu':
-            circular_style = ete3.TreeStyle()
-            circular_style.mode = 'r'
-            circular_style.scale = 0.2
+            style = ete3.TreeStyle()
+            style.mode = 'r'
+            style.scale = 2
         else:
-            circular_style = ete3.TreeStyle()
-            circular_style.mode = 'c'
-            circular_style.scale = 40
+            style = ete3.TreeStyle()
+            style.mode = 'c'
+            style.scale = 4
         # Store images
-        image_url = IMAGES_DIR + '/' + f'{name_image}.png'
-        tree.render(image_url, w=2048, units='mm', tree_style=circular_style)
+        image_url = IMAGES_DIR + '/' + f'{self.tag}.png'
+        # Set static node style
+        nstyle = NodeStyle()
+        flag = self.tag[-2::]
+        style.show_leaf_name = True
+        if flag == 'mu':
+            nstyle["fgcolor"] = "darkred"
+        else:
+            nstyle["fgcolor"] = "darkblue"
+        nstyle["shape"] = "sphere"
+        nstyle["size"] = 10
+        nstyle["hz_line_type"] = 1
+        nstyle["hz_line_color"] = "#cccccc"
+        for n in tree.traverse():
+            n.set_style(nstyle)
+        # Render image
+        width = 2048
+        if flag == 'mu':
+            width = 0.5*width
+        tree.render(image_url, w=width, units='mm', tree_style=style)
         self.image_url = image_url
         self.save()
 

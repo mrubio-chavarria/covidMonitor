@@ -44,15 +44,11 @@ canvas {
     grid-column: 1;
 }
 
-#filter-3 {
+#filter-4 {
     grid-row: 3;
     grid-column: 1;
 }
 
-#filter-4 {
-    grid-row: 4;
-    grid-column: 1;
-}
 
 .overlay {
     grid-column-start: 1;
@@ -103,7 +99,7 @@ canvas {
 .buttons-container {
     display: grid;
     grid-template-rows:  100%;
-    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-columns: 50% 50%;
     grid-row: 2;
     grid-column: 1;
 

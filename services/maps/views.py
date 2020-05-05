@@ -30,24 +30,42 @@ class MapViewSet(viewsets.ModelViewSet):
         The basic scheme of every view.
         """
         aligned_file = COVID_PHYLO_ROOT + '/' + 'fasta' + '/' + alignment
-        # Obtain the processed alignment
-        processed_file = preprocess(aligned_file, True, tag)
         align, flag = Alignment.objects.get_or_create(tag=tag)
         print(flag)
+        # Obtain the processed alignment
         align.genomes_file = aligned_file
-        align.processed_file = processed_file
+        if align.processed_file is None:
+            print('No processed file found')
+            print('Generating processed alignement')
+            processed_file = preprocess(aligned_file, True, tag)
+            align.processed_file = processed_file
+            print('Generation completed')
+        else:
+            print('Processed file found')
+            processed_file = align.processed_file
         align.save()
         # Obtain the tree
         tree, flag = Tree.objects.get_or_create(tag=tag)
-        print(flag)
-        print(tree.layout)
         tree.alignment = align
-        tree.newick_method(processed_file, tag)
+        if tree.newick_structure is None:
+            print('No newick structure found')
+            print('Generating newick structure')
+            tree.newick_method(processed_file, tag)
+            print('Generation completed')
+        else:
+            print('Newick structure found')
+        tree.save()
         # Obtain the map
-        map, flag = Representation.objects.get_or_create(tag=tag)
-        print(flag)
+        map, flag = Representation.objects.get_or_create(tag=tag+tree.layout)
         map.tree = tree
-        map.render_map(tag)
+        if map.image_url is None:
+            print('No map image found')
+            print('Generating image')
+            map.render_map()
+            print('Generation completed')
+        else:
+            print('Map image found')
+        map.save()
         image = '/static/' + map.image_url.split('/')[-1]
         image = {'image': image}
         return image
@@ -65,7 +83,7 @@ class MapViewSet(viewsets.ModelViewSet):
         return render(request, 'home.html', image)
 
     @action(detail=False, methods=['GET', ])
-    def button_S(self, request):
+    def button_China(self, request):
         """
         DESCRIPTION:
         View to render the button S response.
@@ -77,38 +95,12 @@ class MapViewSet(viewsets.ModelViewSet):
         return render(request, 'home.html', image)
 
     @action(detail=False, methods=['GET', ])
-    def button_N(self, request):
-        """
-        DESCRIPTION:
-        View to render the button N response.
-        """
-        # Initial data
-        tag = 'geneN_genome'
-        alignment = 'spain_20200504021458_aligned'
-        image = self.base_view(tag, alignment)
-        return render(request, 'home.html', image)
-
-    @action(detail=False, methods=['GET', ])
-    def button_M(self, request):
-        """
-        DESCRIPTION:
-        View to render the button M response.
-        """
-        # Initial data
-        tag = 'geneM_genome'
-        alignment = 'china_20200504041407_aligned'
-        image = self.base_view(tag, alignment)
-        return render(request, 'home.html', image)
-
-    @action(detail=False, methods=['GET', ])
     def filter_pi(self, request):
         """
         DESCRIPTION:
         View to render the filter pi response.
         """
-        print(Tree.objects.values_list('layout', flat=True))
         Tree.objects.update(layout='pi')
-        print(Tree.objects.values_list('layout', flat=True))
         return redirect('/', request)
 
     @action(detail=False, methods=['GET', ])
@@ -117,20 +109,7 @@ class MapViewSet(viewsets.ModelViewSet):
         DESCRIPTION:
         View to render the filter mu response.
         """
-        print(Tree.objects.values_list('layout', flat=True))
         Tree.objects.update(layout='mu')
-        print(Tree.objects.values_list('layout', flat=True))
-        return redirect('/', request)
-
-    @action(detail=False, methods=['GET', ])
-    def filter_ro(self, request):
-        """
-        DESCRIPTION:
-        View to render the filter ro response.
-        """
-        print(Tree.objects.values_list('layout', flat=True))
-        Tree.objects.update(layout='ro')
-        print(Tree.objects.values_list('layout', flat=True))
         return redirect('/', request)
 
     @action(detail=False, methods=['GET', ])
@@ -151,6 +130,17 @@ class MapViewSet(viewsets.ModelViewSet):
         # Return as zipfile
         response['Content-Disposition'] = f'attachment; filename={filename}'
         return response
+
+    @action(detail=False, methods=['GET', ])
+    def db_reboot(self, request):
+        """
+        DESCRIPTION:
+        View to empty the database.
+        """
+        Tree.objects.all().delete()
+        Representation.objects.all().delete()
+        Alignment.objects.all().delete()
+        return redirect('/', request)
 
 
 @action(detail=False, methods=['GET', ], permission_classes=(AllowAny, ))

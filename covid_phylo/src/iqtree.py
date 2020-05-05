@@ -1,6 +1,7 @@
 
 import os
 import subprocess
+from pathlib import Path
 
 from covid_phylo.src.config import TREE_DIR
 
@@ -16,6 +17,7 @@ def tree_creator(selectname, tag):
     filename = selectname
     subfolder = selectname.split('.')[0]
     route = TREE_DIR / subfolder / filename
+    # Path(route).mkdir(exist_ok=True)
     command = f'cd covid_phylo/covid_phylo_data; iqtree -s {route} -bnni -nt AUTO -redo'
     returncode = subprocess.call(command, shell=True)
     file = open(selectname + '.treefile', 'r')
